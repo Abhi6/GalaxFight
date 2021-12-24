@@ -15,6 +15,12 @@
 		EFDFA84B2773E1B400F04C77 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EFDFA8492773E1B400F04C77 /* Main.storyboard */; };
 		EFDFA84D2773E1B400F04C77 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EFDFA84C2773E1B400F04C77 /* Assets.xcassets */; };
 		EFDFA8502773E1B400F04C77 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EFDFA84E2773E1B400F04C77 /* LaunchScreen.storyboard */; };
+		EFDFA8572773E28D00F04C77 /* GameSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFDFA8562773E28D00F04C77 /* GameSprite.swift */; };
+		EFDFA8592773E9D500F04C77 /* Player1.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFDFA8582773E9D500F04C77 /* Player1.swift */; };
+		EFDFA85B2774CBCE00F04C77 /* ArenaBoundary.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFDFA85A2774CBCE00F04C77 /* ArenaBoundary.swift */; };
+		EFDFA85D2775280600F04C77 /* Player2.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFDFA85C2775280600F04C77 /* Player2.swift */; };
+		EFDFA85F2775700E00F04C77 /* Bullet.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFDFA85E2775700E00F04C77 /* Bullet.swift */; };
+		EFDFA8612776670300F04C77 /* MenuScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFDFA8602776670300F04C77 /* MenuScene.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,6 +33,12 @@
 		EFDFA84A2773E1B400F04C77 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		EFDFA84C2773E1B400F04C77 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EFDFA84F2773E1B400F04C77 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		EFDFA8562773E28D00F04C77 /* GameSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameSprite.swift; sourceTree = "<group>"; };
+		EFDFA8582773E9D500F04C77 /* Player1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player1.swift; sourceTree = "<group>"; };
+		EFDFA85A2774CBCE00F04C77 /* ArenaBoundary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArenaBoundary.swift; sourceTree = "<group>"; };
+		EFDFA85C2775280600F04C77 /* Player2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player2.swift; sourceTree = "<group>"; };
+		EFDFA85E2775700E00F04C77 /* Bullet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bullet.swift; sourceTree = "<group>"; };
+		EFDFA8602776670300F04C77 /* MenuScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuScene.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,7 +75,13 @@
 				EFDFA8412773E1B400F04C77 /* GameScene.sks */,
 				EFDFA8432773E1B400F04C77 /* Actions.sks */,
 				EFDFA8452773E1B400F04C77 /* GameScene.swift */,
+				EFDFA85A2774CBCE00F04C77 /* ArenaBoundary.swift */,
+				EFDFA85E2775700E00F04C77 /* Bullet.swift */,
+				EFDFA8562773E28D00F04C77 /* GameSprite.swift */,
 				EFDFA8472773E1B400F04C77 /* GameViewController.swift */,
+				EFDFA8602776670300F04C77 /* MenuScene.swift */,
+				EFDFA8582773E9D500F04C77 /* Player1.swift */,
+				EFDFA85C2775280600F04C77 /* Player2.swift */,
 				EFDFA8492773E1B400F04C77 /* Main.storyboard */,
 				EFDFA84C2773E1B400F04C77 /* Assets.xcassets */,
 				EFDFA84E2773E1B400F04C77 /* LaunchScreen.storyboard */,
@@ -144,9 +162,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EFDFA8572773E28D00F04C77 /* GameSprite.swift in Sources */,
 				EFDFA8462773E1B400F04C77 /* GameScene.swift in Sources */,
+				EFDFA85D2775280600F04C77 /* Player2.swift in Sources */,
+				EFDFA8612776670300F04C77 /* MenuScene.swift in Sources */,
 				EFDFA8482773E1B400F04C77 /* GameViewController.swift in Sources */,
+				EFDFA8592773E9D500F04C77 /* Player1.swift in Sources */,
 				EFDFA8402773E1B400F04C77 /* AppDelegate.swift in Sources */,
+				EFDFA85B2774CBCE00F04C77 /* ArenaBoundary.swift in Sources */,
+				EFDFA85F2775700E00F04C77 /* Bullet.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
