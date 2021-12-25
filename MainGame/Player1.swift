@@ -10,6 +10,8 @@ import SpriteKit
 class Player1: SKSpriteNode, GameSprite {
     var textureAtlas: SKTextureAtlas = SKTextureAtlas(named: "Player")
     
+    var health = 3
+    
     var initialSize: CGSize = CGSize(width: 50, height: 50)
     
     init() {
@@ -20,14 +22,7 @@ class Player1: SKSpriteNode, GameSprite {
         self.physicsBody?.allowsRotation = false
         self.physicsBody?.affectedByGravity = false
         
-        self.physicsBody?.categoryBitMask = PhysicsCategory.player.rawValue
-        self.physicsBody?.contactTestBitMask =
-        PhysicsCategory.player.rawValue |
-        PhysicsCategory.bullet.rawValue
-        self.physicsBody?.collisionBitMask =
-        PhysicsCategory.player.rawValue |
-        PhysicsCategory.boundary.rawValue |
-        PhysicsCategory.bullet.rawValue
+        self.physicsBody?.categoryBitMask = PhysicsCategory.player1.rawValue
         
     }
     

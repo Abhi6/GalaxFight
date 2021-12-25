@@ -10,9 +10,11 @@ import GameplayKit
 import Foundation
 
 enum PhysicsCategory: UInt32 {
-    case player = 1
-    case bullet = 2
-    case boundary = 4
+    case player1 = 1
+    case bullet1 = 2
+    case player2 = 4
+    case bullet2 = 8
+    case boundary = 16
 }
 
 
@@ -29,6 +31,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     let leftBoundary = VerticalBoundary()
     let bullet1 = Bullet()
     let bullet2 = Bullet()
+    let particlePool = ParticlePool()
     
     var angle: CGFloat = 0
     var angle2: CGFloat = 0
@@ -62,24 +65,35 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         lowerBoundary.physicsBody = SKPhysicsBody(edgeFrom: CGPoint(x: 0, y: 0), to: CGPoint(x: self.size.width, y: 0))
         lowerBoundary.position = CGPoint(x: 0, y: self.size.height / 5)
         self.addChild(lowerBoundary)
+        lowerBoundary.physicsBody?.categoryBitMask = PhysicsCategory.boundary.rawValue
+        lowerBoundary.physicsBody?.contactTestBitMask = PhysicsCategory.bullet1.rawValue | PhysicsCategory.bullet2.rawValue
         
         upperBoundary.position = CGPoint(x: 0, y: self.size.height * (4/5))
         upperBoundary.physicsBody = SKPhysicsBody(edgeFrom: CGPoint(x: 0, y: 0), to: CGPoint(x: self.size.width, y: 0))
         self.addChild(upperBoundary)
+        upperBoundary.physicsBody?.categoryBitMask = PhysicsCategory.boundary.rawValue
+        upperBoundary.physicsBody?.contactTestBitMask = PhysicsCategory.bullet1.rawValue | PhysicsCategory.bullet2.rawValue
         
         rightBoundary.position = CGPoint(x: self.size.width, y: self.size.height/2)
         rightBoundary.physicsBody = SKPhysicsBody(edgeFrom: CGPoint(x: 0, y: -self.size.height), to: CGPoint(x: 0, y: self.size.height*2))
         self.addChild(rightBoundary)
+        rightBoundary.physicsBody?.categoryBitMask = PhysicsCategory.boundary.rawValue
+        rightBoundary.physicsBody?.contactTestBitMask = PhysicsCategory.bullet1.rawValue | PhysicsCategory.bullet2.rawValue
         
         leftBoundary.position = CGPoint(x: 0, y: self.size.height/2)
         leftBoundary.physicsBody = SKPhysicsBody(edgeFrom: CGPoint(x: 0, y: -self.size.height), to: CGPoint(x: 0, y: self.size.height))
         self.addChild(leftBoundary)
+        leftBoundary.physicsBody?.categoryBitMask = PhysicsCategory.boundary.rawValue
+        leftBoundary.physicsBody?.contactTestBitMask = PhysicsCategory.bullet1.rawValue | PhysicsCategory.bullet2.rawValue
         
         self.timer1 = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true, block: { _ in self.bullet1.fireBullet1(player: self.player1, scene: self)})
         
         self.timer2 = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true, block: { _ in self.bullet2.fireBullet2(player: self.player2, scene: self)})
 
         self.physicsWorld.contactDelegate = self
+        
+        particlePool.addEmittersToScene(scene: self)
+
     }
     
     
@@ -162,27 +176,94 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func didBegin(_ contact: SKPhysicsContact) {
+        let bullet: SKPhysicsBody
         let otherBody: SKPhysicsBody
-        let bulletMask = PhysicsCategory.bullet.rawValue
+        let bulletMask = PhysicsCategory.bullet1.rawValue | PhysicsCategory.bullet2.rawValue
         if (contact.bodyA.categoryBitMask & bulletMask) > 0 {
-            // body A is the bullt
+            // body A is the bullet
+            bullet = contact.bodyA
             otherBody = contact.bodyB
         }
         else {
             // body B is the bullet
             otherBody = contact.bodyA
+            bullet = contact.bodyB
         }
-        print(otherBody.categoryBitMask)
+        print("The bit mask of otherBody: \(otherBody.categoryBitMask)")
+        print("The bit mask of the bullet: \(bullet.categoryBitMask)")
         
-        switch otherBody.categoryBitMask {
-        case PhysicsCategory.boundary.rawValue:
-            print("hit boundary")
-        case PhysicsCategory.bullet.rawValue:
-            print("hit bullet")
-        case PhysicsCategory.player.rawValue:
-            print("hit player")
-        default:
-            print("contact with no game logic")
+        if bullet.categoryBitMask == 2 {
+            // bullet1 from player 1
+            switch otherBody.categoryBitMask {
+            case PhysicsCategory.boundary.rawValue:
+                print("hit boundary")
+                if let bullet = bullet.node as? Bullet {
+                   // Call the explode function with a reference
+                   // to the GameScene:
+                   bullet.explode(gameScene: self)
+                }
+                bullet.node?.removeFromParent()
+            case PhysicsCategory.bullet2.rawValue:
+                print("hit bullet2")
+                if let bullet = bullet.node as? Bullet {
+                   // Call the explode function with a reference
+                   // to the GameScene:
+                   bullet.explode(gameScene: self)
+                }
+                bullet.node?.removeFromParent()
+            case PhysicsCategory.player2.rawValue:
+                player2.health -= 1
+                print("hit player2")
+                if player2.health == 0 {
+                    print("game over")
+                    player2.removeFromParent()
+                }
+                if let bullet = bullet.node as? Bullet {
+                   // Call the explode function with a reference
+                   // to the GameScene:
+                   bullet.explode(gameScene: self)
+                }
+                bullet.node?.removeFromParent()
+            default:
+                print("contact with no game logic")
+            }
+        }
+        else if bullet.categoryBitMask == 8 {
+            // bullet2 from player 2
+            switch otherBody.categoryBitMask {
+            case PhysicsCategory.boundary.rawValue:
+                if let bullet = bullet.node as? Bullet {
+                   // Call the explode function with a reference
+                   // to the GameScene:
+                   bullet.explode(gameScene: self)
+                }
+                print(bullet.node as Any)
+                print("hit boundary")
+                bullet.node?.removeFromParent()
+            case PhysicsCategory.bullet1.rawValue:
+                if let bullet = bullet.node as? Bullet {
+                   // Call the explode function with a reference
+                   // to the GameScene:
+                   bullet.explode(gameScene: self)
+                }
+                print("hit bullet1")
+                bullet.node?.removeFromParent()
+            case PhysicsCategory.player1.rawValue:
+                if let bullet = bullet.node as? Bullet {
+                   // Call the explode function with a reference
+                   // to the GameScene:
+                   bullet.explode(gameScene: self)
+                }
+                print("hit player1")
+                player1.health -= 1
+                if player1.health == 0 {
+                    print("game over")
+                    player1.removeFromParent()
+                }
+                bullet.node?.removeFromParent()
+            default:
+                print("contact with no game logic")
+            }
         }
     }
     

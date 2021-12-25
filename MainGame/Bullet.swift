@@ -12,29 +12,18 @@ class Bullet: SKSpriteNode, GameSprite {
     
     var initialSize: CGSize = CGSize(width: 45, height: 45)
     
+    var exploded = false
+    
     init() {
         super.init(texture: nil, color: .clear, size: initialSize)
-        self.physicsBody = SKPhysicsBody(circleOfRadius: self.size.width/2)
-        self.physicsBody?.affectedByGravity = false
-        self.zPosition = -1
-        
-        self.physicsBody?.categoryBitMask = PhysicsCategory.bullet.rawValue
-        self.physicsBody?.contactTestBitMask =
-        PhysicsCategory.player.rawValue |
-        PhysicsCategory.bullet.rawValue |
-        PhysicsCategory.boundary.rawValue
-        self.physicsBody?.collisionBitMask =
-        PhysicsCategory.player.rawValue
-        
-        self.physicsBody!.affectedByGravity = false
-        self.physicsBody!.isDynamic = false
     }
     
     
     func onTap() {}
     
     func fireBullet1(player: Player1, scene: SKScene) {
-        let bulletNode = SKSpriteNode(texture: self.textureAtlas.textureNamed("bullet1"), color: .clear, size: self.initialSize)
+        let bulletNode = Bullet()
+        bulletNode.texture = self.textureAtlas.textureNamed("bullet1")
         bulletNode.position = player.position
         bulletNode.position.y += sin(player.zRotation)*10
         bulletNode.position.x += cos(player.zRotation)*10
@@ -43,6 +32,12 @@ class Bullet: SKSpriteNode, GameSprite {
         bulletNode.physicsBody?.mass = 0.005
         bulletNode.physicsBody?.affectedByGravity = false
         bulletNode.zRotation = player.zRotation
+        
+        bulletNode.physicsBody?.categoryBitMask = PhysicsCategory.bullet1.rawValue
+        bulletNode.physicsBody?.contactTestBitMask =
+        PhysicsCategory.boundary.rawValue |
+        PhysicsCategory.bullet2.rawValue |
+        PhysicsCategory.player2.rawValue
         
         scene.addChild(bulletNode)
         
@@ -61,9 +56,29 @@ class Bullet: SKSpriteNode, GameSprite {
         bulletNode.physicsBody?.affectedByGravity = false
         bulletNode.zRotation = player.zRotation
         
+        bulletNode.physicsBody?.categoryBitMask = PhysicsCategory.bullet2.rawValue
+        bulletNode.physicsBody?.contactTestBitMask =
+        PhysicsCategory.boundary.rawValue |
+        PhysicsCategory.bullet1.rawValue |
+        PhysicsCategory.player1.rawValue
+        
         scene.addChild(bulletNode)
         
         bulletNode.physicsBody?.applyImpulse(CGVector(dx: -cos(player.zRotation)*1, dy: -sin(player.zRotation)*1))
+        
+    }
+    
+    func explode(gameScene: GameScene) {
+        if exploded { return }
+        exploded = true
+        
+        gameScene.particlePool.placeEmitter(node: self, emitterType: "bullet")
+        SKAction.run(SKAction.wait(forDuration: 0.5), onChildWithName: "emitter")
+        
+        self.run(SKAction.fadeAlpha(to: 0, duration: 0.1))
+        
+        self.physicsBody?.categoryBitMask = 0
+        
         
     }
     

@@ -15,11 +15,6 @@ class HorizontalBoundary: SKSpriteNode {
         self.zPosition = -1
         
         self.physicsBody = SKPhysicsBody()
-        self.physicsBody?.categoryBitMask = PhysicsCategory.boundary.rawValue
-        self.physicsBody?.contactTestBitMask = PhysicsCategory.bullet.rawValue
-        self.physicsBody?.collisionBitMask =
-        PhysicsCategory.player.rawValue |
-        PhysicsCategory.bullet.rawValue
         
         self.physicsBody!.affectedByGravity = false
         self.physicsBody!.isDynamic = false
@@ -38,11 +33,6 @@ class VerticalBoundary: SKSpriteNode {
         self.zPosition = -1
         
         self.physicsBody = SKPhysicsBody()
-        self.physicsBody?.categoryBitMask = PhysicsCategory.boundary.rawValue
-        self.physicsBody?.contactTestBitMask = PhysicsCategory.bullet.rawValue
-        self.physicsBody?.collisionBitMask =
-        PhysicsCategory.player.rawValue |
-        PhysicsCategory.bullet.rawValue
         
         self.physicsBody!.affectedByGravity = false
         self.physicsBody!.isDynamic = false
