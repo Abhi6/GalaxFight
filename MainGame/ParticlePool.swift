@@ -11,6 +11,10 @@ import SpriteKit
 class ParticlePool {
     var bulletPool: [SKEmitterNode] = []
     var bulletIndex = 0
+    var playerPool1: [SKEmitterNode] = []
+    var playerIndex1 = 0
+    var playerPool2: [SKEmitterNode] = []
+    var playerIndex2 = 0
     
     var gameScene = SKScene()
     
@@ -24,6 +28,26 @@ class ParticlePool {
             
             bulletPool.append(bullet)
         }
+        
+        for i in 1...3 {
+            let player = SKEmitterNode(fileNamed: "PlayerExplosion1")
+            
+            player!.position = CGPoint(x: -6000, y: -6000)
+            player!.zPosition = CGFloat(100-i)
+            player!.name = "player"+String(i)
+            
+            playerPool1.append(player!)
+        }
+        
+        for i in 1...3 {
+            let player = SKEmitterNode(fileNamed: "PlayerExplosion2")
+            
+            player!.position = CGPoint(x: -6000, y: -6000)
+            player!.zPosition = CGFloat(100-i)
+            player!.name = "player"+String(i)
+            
+            playerPool2.append(player!)
+        }
     }
     
     func addEmittersToScene(scene: GameScene) {
@@ -31,6 +55,14 @@ class ParticlePool {
         
         for i in 0..<bulletPool.count {
             self.gameScene.addChild(bulletPool[i])
+        }
+        
+        for i in 0..<playerPool1.count {
+            self.gameScene.addChild(playerPool1[i])
+        }
+        
+        for i in 0..<playerPool2.count {
+            self.gameScene.addChild(playerPool2[i])
         }
     }
     
@@ -44,6 +76,23 @@ class ParticlePool {
             
             if bulletIndex >= bulletPool.count {
                 bulletIndex = 0
+            }
+        case "player1":
+            emitter = playerPool1[playerIndex1]
+            
+            playerIndex1 += 1
+            
+            if playerIndex1 >= playerPool1.count {
+                playerIndex1 = 0
+            }
+        case "player2":
+            print(playerIndex2)
+            emitter = playerPool2[playerIndex2]
+            
+            playerIndex2 += 1
+            
+            if playerIndex2 >= playerPool2.count {
+                playerIndex2 = 0
             }
         default:
             return

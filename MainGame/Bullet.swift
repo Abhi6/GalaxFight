@@ -6,6 +6,7 @@
 //
 
 import SpriteKit
+import AVFoundation
 
 class Bullet: SKSpriteNode, GameSprite {
     var textureAtlas: SKTextureAtlas = SKTextureAtlas(named: "Player")
@@ -14,10 +15,11 @@ class Bullet: SKSpriteNode, GameSprite {
     
     var exploded = false
     
+    
     init() {
         super.init(texture: nil, color: .clear, size: initialSize)
+        
     }
-    
     
     func onTap() {}
     
@@ -45,8 +47,9 @@ class Bullet: SKSpriteNode, GameSprite {
         
     }
     
-    func fireBullet2( player: Player2, scene: SKScene) {
-        let bulletNode = SKSpriteNode(texture: self.textureAtlas.textureNamed("bullet2"), color: .clear, size: self.initialSize)
+    func fireBullet2(player: Player2, scene: SKScene) {
+        let bulletNode = Bullet()
+        bulletNode.texture = self.textureAtlas.textureNamed("bullet2")
         bulletNode.position = player.position
         bulletNode.position.y += -sin(player.zRotation)*10
         bulletNode.position.x += -cos(player.zRotation)*10
@@ -65,7 +68,6 @@ class Bullet: SKSpriteNode, GameSprite {
         scene.addChild(bulletNode)
         
         bulletNode.physicsBody?.applyImpulse(CGVector(dx: -cos(player.zRotation)*1, dy: -sin(player.zRotation)*1))
-        
     }
     
     func explode(gameScene: GameScene) {
@@ -78,8 +80,6 @@ class Bullet: SKSpriteNode, GameSprite {
         self.run(SKAction.fadeAlpha(to: 0, duration: 0.1))
         
         self.physicsBody?.categoryBitMask = 0
-        
-        
     }
     
     

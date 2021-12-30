@@ -12,13 +12,16 @@ import SpriteKit
 class Player2: SKSpriteNode, GameSprite {
     var textureAtlas: SKTextureAtlas = SKTextureAtlas(named: "Player")
     
-    var health = 3
+    var health = 50
+    
+    var exploded = false
     
     var initialSize: CGSize = CGSize(width: 50, height: 50)
     
     init() {
         super.init(texture: nil, color: .clear, size: initialSize)
         self.texture = textureAtlas.textureNamed("player2")
+        self.name = "Player2"
         
         self.physicsBody = SKPhysicsBody(circleOfRadius: self.size.height/4.55)
         self.physicsBody?.allowsRotation = false
@@ -59,7 +62,24 @@ class Player2: SKSpriteNode, GameSprite {
         }
     }
     
+    func takeDamage() {
+        self.health -= (Int(arc4random_uniform(9))+1)
+        print("Health of \(self.name!):  \(self.health)")
+    }
     
+    func explode(gameScene: GameScene) {
+        if exploded { return }
+        exploded = true
+        
+        gameScene.particlePool.placeEmitter(node: self, emitterType: "player2")
+        SKAction.run(SKAction.wait(forDuration: 0.5), onChildWithName: "emitter")
+        
+        self.run(SKAction.fadeAlpha(to: 0, duration: 0.1))
+        
+        self.physicsBody?.categoryBitMask = 0
+        
+        
+    }
     
     
     required init?(coder aDecoder: NSCoder) {
